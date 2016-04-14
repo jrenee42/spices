@@ -19,11 +19,36 @@
     {{name}}
 </md-content>
     <div class="spiceList">
-        <md-card class="mine" ng-repeat="spice in spiceList">
-            <div  ng-click="editSpice($index)">
+
+        <div class="spice" ng-repeat="spice in spiceList" layout="row">
+            <div  ng-click="editSpice($index)" >
                 <span class="spiceName"> {{spice.name}}</span>
                 <span class="date"> {{spice.date}}</span>
-        </md-card>
+        </div>
+
+    </div>
+</div>
+
+
+    <hr>
+    <div id="container">
+    <div id="row">
+
+        <div id="left">
+            <h4>Left Col</h4>
+            <p>ack</p>
+            <div> ick </div>
+        </div>
+
+        <div id="middle">
+            <div class="header">Middle Col</div>
+            <div> middle??? </div>
+        </div>
+
+        <div id="right">
+            <h4>Right Col</h4>
+            <div> on the right........ </div>
+        </div>
 
     </div>
 </div>

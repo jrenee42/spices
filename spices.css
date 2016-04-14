@@ -18,6 +18,27 @@
     background-color:gray;
 }
 
+#container {
+    display: table;
+}
+
+#row  {
+    display: table-row;
+}
+
+#left, #right, #middle {
+    display: table-cell;
+    margin-left:4rem;
+}
+
+h4 {
+    margin-left:3rem;
+}
+
+.header {
+
+}
+
 #content {
 //  background:black;
   //  color:white;
@@ -38,6 +59,10 @@ a {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     color:gray;
+}
+
+.spice .spiceName {
+    min-width:8rem;
 }
 
 md-card.mine {
