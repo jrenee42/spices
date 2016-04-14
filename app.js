@@ -4,6 +4,14 @@ app.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.toggleSearch = false;
     $scope.results = [];
 
+    $http.get('http://localhost:3000/spices/').then(function successCallback(response) {
+        // this callback will be called asynchronously
+        // when the response is availablesuccessCallback, errorCallback);
+        console.log(response);
+        $scope.spiceList = response.data;
+    });
+
+
     $scope.showSearchBox = function(e) {
         var searchBox = $('#searchTerm');
         searchBox.css('width', 20);
