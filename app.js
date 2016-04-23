@@ -41,6 +41,17 @@ app.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
         console.log("would edit a spice here:", $scope.spiceList[index]);
     };
 
+    $scope.addSpice = function(){
+        var spice = {name: $scope.name, date:$scope.myDate};
+
+        $http.post('http://localhost:3000/spices/', spice).then(function successCallback(response) {
+            console.log("success");
+        }, function errorCallback(response) {
+    // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            console.log("failure to add a spice :(");
+        });
+    };
 
 }]);
 

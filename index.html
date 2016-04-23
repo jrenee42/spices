@@ -16,7 +16,7 @@ e
 <md-content>
     <input ng-model="name"></input>
     <input type="date" ng-model="myDate" md-placeholder="Enter date"></input>
-    {{name}}
+   <button ng-click="addSpice()">Add</button>
 </md-content>
     <div class="spiceList">
 <table  class="table table-bordered table-striped"> 
@@ -29,7 +29,7 @@ e
       </tr>
       <tr ng-repeat="spice in spiceList | orderBy:sortKey:sortReverse" ng-click="editSpice($index)" >
         <td> {{spice.name}}</td>
-        <td> {{spice.date}}</td>
+        <td> {{spice.date | date:'shortDate'}}</td>
       </tr>
 </table>
 
