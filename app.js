@@ -4,6 +4,10 @@ app.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.toggleSearch = false;
     $scope.results = [];
 
+    $scope.sortKey = "name";
+    $scope.sortReverse = false;
+    
+    
     $http.get('http://localhost:3000/spices/').then(function successCallback(response) {
         // this callback will be called asynchronously
         // when the response is availablesuccessCallback, errorCallback);
@@ -11,61 +15,58 @@ app.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
         $scope.spiceList = response.data;
     });
 
+    $scope.cols = [ "name", "date"];
 
-    $scope.showSearchBox = function(e) {
-        var searchBox = $('#searchTerm');
-        searchBox.css('width', 20);
-        $scope.toggleSearch = true;
-
-        TweenLite.to(searchBox, .75, {
-            'width': 225
-        });
-    };
-
-    $scope.gotoLink = function(which) {
-        console.log("here", which);
-        window.open($scope.results[which].page, '_blank');
-
-    }
-
-    $scope.closeSearch = function(e) {
-        $scope.toggleSearch = false;
-
-        $('body').attr("layout-align", "center center");
-        //also erase search results too!
-
-        $scope.results= [];
-    };
-    var searchBox = $('#searchTerm');
-
-    searchBox.on('keydown', function(event) {
-        if (event.keyCode == 13) {
-
-            var searchTerm = $(this).val();
-            console.log("pressed return: " + searchTerm);
-            $scope.results = [];
-
-            $('body').attr("layout-align", "start center");
-
-            var api = 'http://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=';
-            var cb = '&callback=JSON_CALLBACK';
-            var page = 'http://en.wikipedia.org/?curid=';
-
-            $http.jsonp(api + searchTerm + cb)
-                .success(function(data) {
-
-                    var results = data.query.pages;
-                    angular.forEach(results, function(v, k) {
-                        console.log(v);
-                        console.log("k", k);
-                        $scope.results.push({
-                            title: v.title,
-                            body: v.extract,
-                            page: page + v.pageid
-                        })
-                    })
-                });
+    $scope.showArrow = function(direction, colKey) {
+        if (direction){
+            return colKey === $scope.sortKey && !$scope.sortReverse;
+        } else {
+            return colKey === $scope.sortKey && $scope.sortReverse;
         }
-    });
+    };
+
+    $scope.doSorting = function(colKey){
+        //if already sorting on this column, toggle the direction
+        //else, make it be ascending (not reverse)
+
+        if ($scope.sortKey === colKey){
+            $scope.sortReverse = !$scope.sortReverse;
+        } else {
+            $scope.sortReverse = false;
+            $scope.sortKey = colKey;
+        }
+    };
+        
+    $scope.editSpice = function(index){
+        console.log("would edit a spice here:", $scope.spiceList[index]);
+    };
+
 
 }]);
+
+app.filter('capitalize', function() {
+    return function(input) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    }
+});
+
+
+app.controller('headerController', function($scope) {
+    //here for the showUp/showDown to have a place to be 'called' from; all done via isolate scope
+});
+
+app.directive('myHeader', function() {
+    
+    return {
+        restrict: 'E',
+        transclude: true,
+        scope: {
+            'showUp': '&',
+            'showDown': '&'
+        },
+        controller: 'headerController',
+        controllerAs: 'header',
+        bindToController: true,
+        templateUrl: 'http://localhost:8000/header.html'
+    };
+});
