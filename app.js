@@ -7,14 +7,17 @@ app.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.sortKey = "name";
     $scope.sortReverse = false;
     
+    function getData(){
+        $http.get('http://localhost:3000/spices/').then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is availablesuccessCallback, errorCallback);
+            console.log(response);
+            $scope.spiceList = response.data;
+        });
+    };
     
-    $http.get('http://localhost:3000/spices/').then(function successCallback(response) {
-        // this callback will be called asynchronously
-        // when the response is availablesuccessCallback, errorCallback);
-        console.log(response);
-        $scope.spiceList = response.data;
-    });
-
+    getData();
+    
     $scope.cols = [ "name", "date"];
 
     $scope.showArrow = function(direction, colKey) {
@@ -37,15 +40,32 @@ app.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
         }
     };
         
-    $scope.editSpice = function(index){
-        console.log("would edit a spice here:", $scope.spiceList[index]);
+    $scope.editSpice = function(spice){
+//        var actualSpice = $scope.spiceList.find(function(spice){
+  //          return spice.id === id;
+    //    });
+        
+        console.log("would edit a spice here:", spice);
     };
 
+    $scope.deleteSpice = function(spice){
+//        $http.delete('http://localhost:3000/spices/'+ $scope.spiceList[index].id).then(function successCallback(response) {
+            
+         $http.delete('http://localhost:3000/spices/'+ spice.id).then(function successCallback(response) {            console.log("success");
+            getData();
+        }, function errorCallback(response) {
+    // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            console.log("failure to add a spice :(");
+        });
+    }
+    
     $scope.addSpice = function(){
         var spice = {name: $scope.name, date:$scope.myDate};
 
         $http.post('http://localhost:3000/spices/', spice).then(function successCallback(response) {
             console.log("success");
+            getData();
         }, function errorCallback(response) {
     // called asynchronously if an error occurs
             // or server returns response with an error status.

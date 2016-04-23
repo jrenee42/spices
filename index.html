@@ -8,36 +8,37 @@
     <link rel="stylesheet" href="spices.css"/>
     <meta name="viewport" content="initial-scale=1" />
 </head>
-e
+
 <body layout="column" layout-align="center center" ng-controller="AppCtrl" id="content">
 
 <h1> Spices:  a sorting</h1>
-<div layout="row">
+
 <md-content>
+  <div layout="row">
     <input ng-model="name"></input>
     <input type="date" ng-model="myDate" md-placeholder="Enter date"></input>
-   <button ng-click="addSpice()">Add</button>
+    <button ng-click="addSpice()" ng-disabled="!name || !myDate">Add</button>
+  </div>
 </md-content>
-    <div class="spiceList">
-<table  class="table table-bordered table-striped"> 
-      <tr>
-        <td ng-repeat="col in cols">
-          <my-header show-up="showArrow(true, col)" show-down="showArrow(false,col)" ng-click="doSorting(col)">
-            {{ col  }}
-          </my-header>
-        </td>
-      </tr>
-      <tr ng-repeat="spice in spiceList | orderBy:sortKey:sortReverse" ng-click="editSpice($index)" >
-        <td> {{spice.name}}</td>
-        <td> {{spice.date | date:'shortDate'}}</td>
-      </tr>
-</table>
-
-    </div>
+<div class="spiceList">
+  <table  class="table table-bordered table-striped"> 
+    <tr>
+      <td ng-repeat="col in cols">
+        <my-header show-up="showArrow(true, col)" show-down="showArrow(false,col)" ng-click="doSorting(col)">
+          {{ col  }}
+        </my-header>
+      </td>
+    </tr>
+    <tr ng-repeat="spice in spiceList | orderBy:sortKey:sortReverse" >
+      <td> {{spice.name}}</td>
+      <td> {{spice.date | date:'shortDate'}}</td>
+      <td> <button ng-click="editSpice(spice)"> Edit</button> </td>
+      <td> <button ng-click="deleteSpice(spice)"> Delete</button> </td>
+    </tr>
+  </table>
+  
 </div>
 
-
-    <hr>
 
 <!-- Angular Material Dependencies -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
